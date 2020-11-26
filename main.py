@@ -6,3 +6,6 @@ def hoge2():
 
 def hoge3():
     pass
+
+def hoge4():
+    pass
