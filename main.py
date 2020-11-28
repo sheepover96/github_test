@@ -1,3 +1,6 @@
+def hoge8():
+    pass
+
 def hoge7():
     pass
 
