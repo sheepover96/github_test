@@ -9,3 +9,6 @@ def hoge3():
 
 def hoge4():
     pass
+
+def hoge5():
+    pass
