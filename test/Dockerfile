@@ -2,4 +2,4 @@ FROM node:12.20.0-buster as builder
 
 COPY . ./
 
-CMD ["ls", "-la"]
+CMD ["cat", "a.txt"]
