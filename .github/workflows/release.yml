@@ -31,9 +31,9 @@ jobs:
         id: create_release_branch
         uses: peterjgrainger/action-create-branch@v2.0.1
         env:
-          GITHUB_TOKEN: $PREVIOUS_TAG
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: "release/${{ github.ref }}"
+          branch: "release/$PREVIOUS_TAG"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
