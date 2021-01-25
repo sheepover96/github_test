@@ -19,21 +19,22 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
 
-      - name: Get commit summary
-        id: get_commit_summary
+      - name: Create Release summary
+        id: create_release_summary
         run: |
           PREVIOUS_TAG=$(git tag --sort=-creatordate | sed -n 2p)
           echo "PREVIOUS_TAG: $PREVIOUS_TAG"
           COMMIT_SUMMARY="$(git log --oneline --pretty=tformat:"%h %s" $PREVIOUS_TAG..${{ github.ref }})"
           COMMIT_SUMMARY="${COMMIT_SUMMARY//$'\n'/'%0A'}"
           echo ::set-output name=COMMIT_SUMMARY::$COMMIT_SUMMARY
+          echo ::set-output name=RELEASE_BRANCH_NAME::$RELEASE_BRANCH_NAME
       - name: Create Release Branch
         id: create_release_branch
         uses: peterjgrainger/action-create-branch@v2.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: $( echo -n release/ && git tag --sort=-creatordate | sed -n 1p)
+          branch: release/${{ steps.get_version.outputs.VERSION }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -43,7 +44,7 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
           release_name: Release ${{ steps.get_version.outputs.VERSION }}
           body: |
-            ${{ steps.get_commit_summary.outputs.COMMIT_SUMMARY }}
+            ${{ steps.create_release_summary.outputs.COMMIT_SUMMARY }}
           draft: false
           prerelease: false
 
