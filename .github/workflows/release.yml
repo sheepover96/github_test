@@ -32,9 +32,8 @@ jobs:
         uses: peterjgrainger/action-create-branch@v2.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PREVIOUS_TAG: $(git tag --sort=-creatordate | sed -n 2p)
         with:
-          branch: "release/$PREVIOUS_TAG"
+          branch: "release/"$(git tag --sort=-creatordate | sed -n 1p)
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
